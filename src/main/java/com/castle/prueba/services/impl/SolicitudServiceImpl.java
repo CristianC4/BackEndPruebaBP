@@ -2,10 +2,14 @@ package com.castle.prueba.services.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.castle.prueba.dto.AverageRequestDTO;
+import com.castle.prueba.dto.AverageResponseDTO;
 import com.castle.prueba.dto.ResponsePruebaDTO;
 import com.castle.prueba.entity.SolicitudEntity;
 import com.castle.prueba.repository.SolicitudRepository;
@@ -51,7 +55,7 @@ public class SolicitudServiceImpl implements SolicitudService{
 			response.setCode(99);
 			response.setMessage("Consulta Fallida");
 			response.setData(null);
-			log.info("ERROR EN EL SERVICIO DE OBTENER TODAS LAS SOLICITUDES"+e);
+			log.error("ERROR EN EL SERVICIO DE OBTENER TODAS LAS SOLICITUDES"+e);
 		}
 		return response;
 	}
@@ -70,7 +74,7 @@ public class SolicitudServiceImpl implements SolicitudService{
 			response.setCode(99);
 			response.setMessage("Consulta Fallida");
 			response.setData(false);
-			log.info("ERROR EN EL SERVICIO DE BORRAR UNA SOLICITUD"+e);
+			log.error("ERROR EN EL SERVICIO DE BORRAR UNA SOLICITUD"+e);
 		}
 		return response;
 	}
@@ -96,7 +100,7 @@ public class SolicitudServiceImpl implements SolicitudService{
 			response.setCode(99);
 			response.setMessage("Consulta Fallida");
 			response.setData(null);
-			log.info("ERROR EN EL SERVICIO DE CREAR UNA SOLICITUD"+e);
+			log.error("ERROR EN EL SERVICIO DE CREAR UNA SOLICITUD"+e);
 		}
 		return response;
 	}
@@ -114,7 +118,7 @@ public class SolicitudServiceImpl implements SolicitudService{
 			response.setCode(99);
 			response.setMessage("Consulta Fallida");
 			response.setData(null);
-			log.info("ERROR EN EL SERVICIO DE ACTUALIZAR UNA SOLICITUD"+e);
+			log.error("ERROR EN EL SERVICIO DE ACTUALIZAR UNA SOLICITUD"+e);
 		}
 		return response;
 	}
@@ -132,9 +136,36 @@ public class SolicitudServiceImpl implements SolicitudService{
 			response.setCode(99);
 			response.setMessage("Consulta Fallida");
 			response.setData(null);
-			log.info("ERROR EN EL SERVICIO DE OBTENER UNA SOLICITUD POR CLIENTE"+e);
+			log.error("ERROR EN EL SERVICIO DE OBTENER UNA SOLICITUD POR CLIENTE"+e);
 		}
 		return response;
-	}	
+	}
+
+	@Override
+	public ResponsePruebaDTO<AverageResponseDTO> getAverageAmount(AverageRequestDTO request) {
+		ResponsePruebaDTO<AverageResponseDTO> response = new ResponsePruebaDTO<>();
+		try {
+			log.info("INICIA SERVICIO DE OBTENER MEJOR PROMEDIO DE SOLICITUDES");
+			Map<String, Integer> averageMap = new HashMap<>();
+			Integer average;
+			SolicitudEntity solicitudBase = solicitudRepository.findByIdAndInitDate(request.getIdSolicitud(), request.getDateSolicitud());
+			List<SolicitudEntity> solicitudes = solicitudRepository.findAllById(request.getIdSolicitud());
+			solicitudes.forEach(solicitud -> {
+				//average = solicitud.getAmount() + solicitudBase.getAmount() / 2;
+				solicitud.getAmount();
+				//averageMap.put(solicitud.getInitDate().toString(), average);
+			});
+			
+			response.setCode(1);
+			response.setMessage("Promedio Exitoso");
+			log.info("FINALIZA SERVICIO DE OBTENER MEJOR PROMEDIO DE SOLICITUDES");
+		} catch (Exception e) {
+			response.setCode(99);
+			response.setMessage("Promedio Exitoso");
+			response.setData(null);
+			log.error("ERROR EN EL SERVICIO DE OBTENER MEJOR PROMEDIO DE SOLICITUDES");
+		}
+		return null;
+	}
 
 }

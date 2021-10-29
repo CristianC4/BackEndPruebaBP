@@ -38,7 +38,7 @@ public class SolicitudController {
 		return solicitudService.deleteSolicitud(request.getIdSolicitud());
 	}
 	
-	@PostMapping(value = "/createSolicitud", produces = {"application/json"})
+	@PostMapping(value = "/createSolicitud", produces = {"application/json"}, consumes = {"application/json"})
 	public ResponsePruebaDTO<SolicitudEntity> createSolicitud(@RequestBody SolicitudEntity solicitud){
 		return solicitudService.createSolicitud(solicitud);
 	}
